@@ -40,10 +40,21 @@ paths:
         description: Объект запроса
         required: true
   /pub.aspx?method=getFilmAnalog1:
-    post:
-      tags:
-        - 'analog'
+    get:
       summary: Возвращает фильмы-аналоги для заданного фильма в заданном периоде
+      parameters:
+        - in: path
+          name: idFilm
+          schema:
+            type: string
+          required: true
+          description: ПУ фильма
+        - in: path
+          name: idInterval
+          schema:
+            type: string
+          required: true
+          description: ID интервала - значение атрибута "id" из результата запроса "getFilmAnalogInterval"
       responses:
         '200':
           description: successful operation
@@ -52,31 +63,30 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CompStat'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Film'
         '401': 
           description: Ошибка аутентификации
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResult'
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
         '500': 
           description: Ошибка сервера
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResult'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompsStatRequest'
-        description: Объект запроса
-        required: true
-  /api/kinoteka/film-stat:
-    post:
-      tags:
-        - 'film,statistics'
-      summary: Возвращает статистику по фильмам
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+  /pub.aspx?method=getFilmAnalogInterval:
+    get:
+      summary: Возвращает список доступных интервалов для конкретного фильма
+      parameters:
+        - in: path
+          name: idFilm
+          schema:
+            type: string
+          required: true
+          description: ПУ фильма
       responses:
         '200':
           description: successful operation
@@ -85,26 +95,20 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/FilmStat'
-        '401': 
+                  $ref: '#/components/schemas/AnalogInterval'
+        '401':
           description: Ошибка аутентификации
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResult'
-        '500': 
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
           description: Ошибка сервера
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResult'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FilmsStatRequest'
-        description: Объект запроса
-        required: true
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
 servers:
   - url: 'https://ekinobilet.ru/ekbapi'
     description: боевой сервер
@@ -113,25 +117,13 @@ servers:
 components:
   schemas:
 
-    FilmStat:
+    AnalogInterval:
       type: object
-      description: Статистика по фильму
+      description: Интервал для построения массива фильмов-аналогов
       properties:
-        puNum:
+        id:
           type: string
-          description: Номер ПУ
-        filmName:
+          description: ID интервала
+        desc:
           type: string
-          description: Название фильма
-        tcktsTotal:
-          type: integer
-          format: int64
-          description: зрителей по фильму за выбранный период
-        sessTotal:
-          type: integer
-          format: int64
-          description: сеансов по фильму за выбранный период
-        summTotal:
-          type: number
-          format: money
-          description: сборы по фильму за выбранный период
+          description: Название интервала
