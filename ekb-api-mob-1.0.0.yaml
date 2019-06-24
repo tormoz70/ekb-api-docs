@@ -1,0 +1,590 @@
+openapi: 3.0.0
+info:
+  description: |
+    API для мобильного приложения ЕАИС
+  version: "1.0.0-oas3"
+  title: Мост кинотека-еаис
+  contact:
+    email: ah@fond-kino.ru
+tags:
+  - name: eais
+    description: ЕАИС
+paths:
+  /pub.aspx?method=auth:
+    post:
+      summary: Выполняет процедуру аутентификации и возвращает объект пользователя
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401': 
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500': 
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        description: Объект запроса
+        required: true
+  /pub.aspx?method=getFilmAnalog1:
+    post:
+      tags:
+        - 'analog'
+      summary: Возвращает фильмы-аналоги для заданного фильма в заданном периоде
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompStat'
+        '401': 
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+        '500': 
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompsStatRequest'
+        description: Объект запроса
+        required: true
+  /api/kinoteka/film-stat:
+    post:
+      tags:
+        - 'film,statistics'
+      summary: Возвращает статистику по фильмам
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FilmStat'
+        '401': 
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+        '500': 
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilmsStatRequest'
+        description: Объект запроса
+        required: true
+servers:
+  - url: 'https://ekinobilet.ru/ekbapi'
+    description: боевой сервер
+  - url: 'https://ekinobilet.ru/ekbapi2'
+    description: тестовый сервер
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Имя пользователя
+        password:
+          type: string
+          description: Пароль
+
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int32
+        message:
+          type: string
+          description: Сообщение сервера
+    User:
+      type: object
+      properties:
+        auth_token:
+          type: string
+          description: Токен сессии, передается во все запросы параметром auth_token. Перманентный. Жив пока не сделаешь logoff
+        company:
+          type: string
+          description: Название организации, к которой относится пользователь
+        roles:
+          type: string
+          description: Список ролей пользователья (разделитель ',')
+        grants:
+          type: string
+          description: Список разрешений (разделитель ',')
+        role:
+          type: integer
+          description: Роль  пользователя (осталось для совместимости со старыми приложениями)
+        org_id:
+          type: string
+          description: ID организации, к которой относится пользователь
+        ip:
+          type: string
+          description: IP адрес, пользователя
+        type:
+          type: integer
+          description: Тип пользователя (устаревший атрибут)
+        push:
+          type: boolean
+          description: Если true, то разрешены push уведомления (пока не используется)
+        pushtoken:
+          type: string
+          description: Для push уведомлений
+    Film:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Номер ПУ
+        title:
+          type: string
+          description: Название фильма
+        title_en:
+          type: string
+          description: Название фильма (англ)
+        year:
+          type: string
+          description: Год выхода на экран
+        country:
+          type: string
+          description: Страна
+        country_en:
+          type: string
+          description: Страна (англ)
+        owner:
+          type: string
+          description: Правообладатель
+        owner_en:
+          type: string
+          description: Правообладатель (англ)
+        description:
+          type: string
+          description: Описание
+        description_en:
+          type: string
+          description: Описание (англ)
+        launch_date:
+          type: string
+          description: Дата выхода на экраны (в формате YYYY.MM.DD'T'HH:mm:ss, например '2019.01.01T00:00:00')
+        genre:
+          type: string
+          description: Список жанров
+        genre_en:
+          type: string
+          description: Список жанров (англ)
+        genreids:
+          type: array
+          items:
+            type: integer
+          description: Список id жанров (если они есть в справочнике)
+        ageRestrictions:
+          type: string
+          description: Воразстные ограничения
+        ageRestrictions_en:
+          type: string
+          description: Воразстные ограничения (англ)
+        ageRestr:
+          type: integer
+          description: Воразстные ограничения
+        forecastFK:
+          type: string
+          description: Прогноз Фонда Кино
+        forecastDist:
+          type: string
+          description: Прогноз Дистрибьютора
+        forecastBK:
+          type: string
+          description: Прогноз БК
+        forecast4:
+          type: string
+          description: Прогноз №4
+        isFollowed:
+          type: string
+          description: Правообладатель (англ)
+        director:
+          type: string
+          description: Правообладатель (англ)
+        director_en:
+          type: string
+          description: Правообладатель (англ)
+        screenwriter:
+          type: string
+          description: Правообладатель (англ)
+        screenwriter_en:
+          type: string
+          description: Правообладатель (англ)
+        producer:
+          type: string
+          description: Правообладатель (англ)
+        producer_en:
+          type: string
+          description: Правообладатель (англ)
+        distributor:
+          type: string
+          description: Правообладатель (англ)
+        distributor_en:
+          type: string
+          description: Правообладатель (англ)
+        starring:
+          type: string
+          description: Правообладатель (англ)
+        rating:
+          type: string
+          description: Правообладатель (англ)
+        heading:
+          type: string
+          description: Правообладатель (англ)
+        distributorId:
+          type: string
+          description: Правообладатель (англ)
+        money0:
+          type: string
+          description: Правообладатель (англ)
+        money0_en:
+          type: string
+          description: Правообладатель (англ)
+        money0_eu:
+          type: string
+          description: Правообладатель (англ)
+        tickets0:
+          type: string
+          description: Правообладатель (англ)
+        seances0:
+          type: string
+          description: Правообладатель (англ)
+        money:
+          type: string
+          description: Правообладатель (англ)
+        money_en:
+          type: string
+          description: Правообладатель (англ)
+        money_eu:
+          type: string
+          description: Правообладатель (англ)
+        tickets:
+          type: string
+          description: Правообладатель (англ)
+        seances:
+          type: string
+          description: Правообладатель (англ)
+        presales:
+          type: string
+          description: Правообладатель (англ)
+        presales_en:
+          type: string
+          description: Правообладатель (англ)
+        presales_eu:
+          type: string
+          description: Правообладатель (англ)
+        presalesStart:
+          type: string
+          description: Правообладатель (англ)
+        presalesEnd:
+          type: string
+          description: Правообладатель (англ)
+        launchDateSales:
+          type: string
+          description: Правообладатель (англ)
+        launchDateSales_en:
+          type: string
+          description: Правообладатель (англ)
+        launchDateSales_eu:
+          type: string
+          description: Правообладатель (англ)
+        firstWeekendDateStart:
+          type: string
+          description: Правообладатель (англ)
+        firstWeekendDateFinish:
+          type: string
+          description: Правообладатель (англ)
+        firstWeekendSales:
+          type: string
+          description: Правообладатель (англ)
+        firstWeekendSales_en:
+          type: string
+          description: Правообладатель (англ)
+        firstWeekendSales_eu:
+          type: string
+          description: Правообладатель (англ)
+        secondWeekendDateStart:
+          type: string
+          description: Правообладатель (англ)
+        secondWeekendDateFinish:
+          type: string
+          description: Правообладатель (англ)
+        secondWeekendSales:
+          type: string
+          description: Правообладатель (англ)
+        secondWeekendSales_en:
+          type: string
+          description: Правообладатель (англ)
+        secondWeekendSales_eu:
+          type: string
+          description: Правообладатель (англ)
+        generalSalesDateFinish:
+          type: string
+          description: Правообладатель (англ)
+        dateStart:
+          type: string
+          description: Правообладатель (англ)
+        dateFinish:
+          type: string
+          description: Правообладатель (англ)
+        dsum:
+          type: string
+          description: Правообладатель (англ)
+        sum:
+          type: string
+          description: Правообладатель (англ)
+        sum_en:
+          type: string
+          description: Правообладатель (англ)
+        sum_eu:
+          type: string
+          description: Правообладатель (англ)
+        quantity:
+          type: string
+          description: Правообладатель (англ)
+        sessions:
+          type: string
+          description: Правообладатель (англ)
+        moneyPerSession:
+          type: string
+          description: Правообладатель (англ)
+        moneyPerSession_en:
+          type: string
+          description: Правообладатель (англ)
+        moneyPerSession_eu:
+          type: string
+          description: Правообладатель (англ)
+        ticketsPerSession:
+          type: string
+          description: Правообладатель (англ)
+        percentageSalesFK:
+          type: string
+          description: Правообладатель (англ)
+        percentageTicketsFK:
+          type: string
+          description: Правообладатель (англ)
+        percentageSeansesFK:
+          type: string
+          description: Правообладатель (англ)
+        posterBig:
+          type: string
+          description: Правообладатель (англ)
+        posterSmall:
+          type: string
+          description: Правообладатель (англ)
+        posterBig_en:
+          type: string
+          description: Правообладатель (англ)
+        posterSmall_en:
+          type: string
+          description: Правообладатель (англ)
+        sumByDateFinish:
+          type: string
+          description: Правообладатель (англ)
+        sumByDateFinish_en:
+          type: string
+          description: Правообладатель (англ)
+        sumByDateFinish_eu:
+          type: string
+          description: Правообладатель (англ)
+        showdays:
+          type: string
+          description: Правообладатель (англ)
+        previewFrom:
+          type: string
+          description: Правообладатель (англ)
+        previewTo:
+          type: string
+          description: Правообладатель (англ)
+        previewSumm:
+          type: string
+          description: Правообладатель (англ)
+        previewSumm_en:
+          type: string
+          description: Правообладатель (англ)
+        previewSumm_eu:
+          type: string
+          description: Правообладатель (англ)
+        previewTickets:
+          type: string
+          description: Правообладатель (англ)
+        previewSessions:
+          type: string
+          description: Правообладатель (англ)
+
+    CompStatRequest:
+      type: object
+      required: ["compId","compName","pus"]
+      properties:
+        compId:
+          type: integer
+          description: ID компании
+        compName:
+          type: string
+          description: Название компании
+        pus:
+          type: string
+          description: 'Список ПУ (разделитель ",")'
+    CompStat:
+      type: object
+      description: Статистика по компании (все данные возвращаются за выбранный период)
+      properties:
+        ktcompId:
+          type: integer
+          format: int64
+          description: ID компании
+        fkTcktsReturn00:
+          type: integer
+          format: int64
+          description: зрители по безвозвратным проектам
+        fkTcktsReturn01:
+          type: integer
+          format: int64
+          description: зрители по возвратным проектам
+        fkTcktsReturn11:
+          type: integer
+          format: int64
+          description: зрители по 100% возвратным проектам
+        fkTcktsTotal:
+          type: integer
+          format: int64
+          description: зрители по проектам ФК
+        fkSessReturn00:
+          type: integer
+          format: int64
+          description: сеансы по безвозвратным проектам
+        fkSessReturn01:
+          type: integer
+          format: int64
+          description: сеансы по возвратным проектам
+        fkSessReturn11:
+          type: integer
+          format: int64
+          description: сеансы по 100% возвратным проектам
+        fkSessTotal:
+          type: integer
+          format: int64
+          description: сеансы по проектам ФК
+        fkSummReturn00:
+          type: number
+          format: money
+          description: сборы по безвозвратным проектам
+        fkSummReturn01:
+          type: number
+          format: money
+          description: сборы по возвратным проектам
+        fkSummReturn11:
+          type: number
+          format: money
+          description: сборы по 100% возвратным проектам
+        fkSummTotal:
+          type: number
+          format: money
+          description: сборы по проектам ФК
+        fkFilmsReturn00:
+          type: integer
+          format: int64
+          description: фильмов по безвозвратным проектам
+        fkFilmsReturn01:
+          type: integer
+          format: int64
+          description: фильмов по возвратным проектам
+        fkFilmsReturn11:
+          type: integer
+          format: int64
+          description: фильмов по 100% возвратным проектам
+        fkFilmsTotal:
+          type: integer
+          format: int64
+          description: фильмов по проектам ФК
+        tcktsTotal:
+          type: integer
+          format: int64
+          description: зрителей по компании
+        sessTotal:
+          type: integer
+          format: int64
+          description: сеансов по компании
+        summTotal:
+          type: number
+          format: money
+          description: сборы по компании
+        filmsTotal:
+          type: integer
+          format: int64
+          description: фильмов по компании
+    FilmsStatRequest:
+      type: object
+      required: ["pus"]
+      properties:
+        periodFrom:
+          type: string
+          description: Начало запрашиваемого периода
+          format: YYYY-MM-DD
+        periodTo:
+          type: string
+          description: Конец запрашиваемого периода
+          format: YYYY-MM-DD
+        pus:
+          type: string
+          description: 'Список ПУ (разделитель ",")'
+    
+    FilmStat:
+      type: object
+      description: Статистика по фильму
+      properties:
+        puNum:
+          type: string
+          description: Номер ПУ
+        filmName:
+          type: string
+          description: Название фильма
+        tcktsTotal:
+          type: integer
+          format: int64
+          description: зрителей по фильму за выбранный период
+        sessTotal:
+          type: integer
+          format: int64
+          description: сеансов по фильму за выбранный период
+        summTotal:
+          type: number
+          format: money
+          description: сборы по фильму за выбранный период
