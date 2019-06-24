@@ -233,221 +233,221 @@ components:
           type: string
           description: Прогноз №4
         isFollowed:
-          type: string
-          description: Правообладатель (англ)
+          type: boolean
+          description: Фильм в прокате
         director:
           type: string
-          description: Правообладатель (англ)
+          description: Режисеры
         director_en:
           type: string
-          description: Правообладатель (англ)
+          description: Режисеры (англ)
         screenwriter:
           type: string
-          description: Правообладатель (англ)
+          description: Сценаристы
         screenwriter_en:
           type: string
-          description: Правообладатель (англ)
+          description: Сценаристы (англ)
         producer:
           type: string
-          description: Правообладатель (англ)
+          description: Продюссеры
         producer_en:
           type: string
-          description: Правообладатель (англ)
+          description: Продюссеры (англ)
         distributor:
           type: string
-          description: Правообладатель (англ)
+          description: Правообладатели (по реестру МКРФ)
         distributor_en:
           type: string
-          description: Правообладатель (англ)
+          description: Правообладатели (по реестру МКРФ) (англ)
         starring:
           type: string
-          description: Правообладатель (англ)
+          description: В ролях
         rating:
           type: string
-          description: Правообладатель (англ)
+          description: В ролях (англ)
         heading:
           type: string
-          description: Правообладатель (англ)
+          description: Какой-то рудимент
         distributorId:
           type: string
-          description: Правообладатель (англ)
+          description: Список ID дистрибьюторов (разделитель ',')
         money0:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы за весь период проката (служебный атрибут)
         money0_en:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы за весь период проката в usd (служебный атрибут)
         money0_eu:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы за весь период проката в euro (служебный атрибут)
         tickets0:
-          type: string
-          description: Правообладатель (англ)
+          type: integer
+          description: Зрителей посмотрело за весь период проката (служебный атрибут)
         seances0:
-          type: string
-          description: Правообладатель (англ)
+          type: integer
+          description: Сеансов за весь период проката (служебный атрибут)
         money:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы за весь период проката
         money_en:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы за весь период проката в usd
         money_eu:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы за весь период проката в euro
         tickets:
-          type: string
-          description: Правообладатель (англ)
+          type: integer
+          description: Зрителей посмотрело за весь период проката
         seances:
-          type: string
-          description: Правообладатель (англ)
+          type: integer
+          description: Сеансов за весь период проката
         presales:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Предпродажи
         presales_en:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Предпродажи в usd
         presales_eu:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Предпродажи в euro
         presalesStart:
           type: string
-          description: Правообладатель (англ)
+          description: Начало предпродаж (в формате YYYY.MM.DD'T'HH:mm:ss, например '2019.01.01T00:00:00')
         presalesEnd:
           type: string
-          description: Правообладатель (англ)
+          description: Окончание предпродаж (в формате YYYY.MM.DD'T'HH:mm:ss, например '2019.01.01T00:00:00')
         launchDateSales:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы в день старта
         launchDateSales_en:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы в день старта в usd
         launchDateSales_eu:
-          type: string
-          description: Правообладатель (англ)
+          type: number
+          description: Сборы в день старта в euro
         firstWeekendDateStart:
           type: string
-          description: Правообладатель (англ)
+          description: Дата начала первого уикенда (в формате YYYY.MM.DD'T'HH:mm:ss, например '2019.01.01T00:00:00')
         firstWeekendDateFinish:
           type: string
-          description: Правообладатель (англ)
+          description: Дата окончания первого уикенда (в формате YYYY.MM.DD'T'HH:mm:ss, например '2019.01.01T00:00:00')
         firstWeekendSales:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы в первый уикенд
         firstWeekendSales_en:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы в первый уикенд в usd
         firstWeekendSales_eu:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы в первый уикенд в euro
         secondWeekendDateStart:
           type: string
-          description: Правообладатель (англ)
+          description: Дата начала вторго уикенда (в формате YYYY.MM.DD'T'HH:mm:ss, например '2019.01.01T00:00:00')
         secondWeekendDateFinish:
           type: string
-          description: Правообладатель (англ)
+          description: Дата окончания вторго уикенда (в формате YYYY.MM.DD'T'HH:mm:ss, например '2019.01.01T00:00:00')
         secondWeekendSales:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы в первый уикенд
         secondWeekendSales_en:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы в первый уикенд в usd
         secondWeekendSales_eu:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы в первый уикенд в euro
         generalSalesDateFinish:
           type: string
-          description: Правообладатель (англ)
+          description: Дата окончания общих сборов
         dateStart:
           type: string
-          description: Правообладатель (англ)
+          description: Начало периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
         dateFinish:
           type: string
-          description: Правообладатель (англ)
+          description: Окончание периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
         dsum:
           type: string
-          description: Правообладатель (англ)
+          description: Для аналогов - это разность между суммой сборов оригинального фильма и его аналогом (для оригинала тут будет 0)
         sum:
           type: string
-          description: Правообладатель (англ)
+          description: Сумма сборов за выбранный период
         sum_en:
           type: string
-          description: Правообладатель (англ)
+          description: Сумма сборов за выбранный период в usd
         sum_eu:
           type: string
-          description: Правообладатель (англ)
+          description: Сумма сборов за выбранный период в euro
         quantity:
           type: string
-          description: Правообладатель (англ)
+          description: Кол-во зрителей которые посмотрели фильм за выбранный период
         sessions:
           type: string
-          description: Правообладатель (англ)
+          description: Кол-во сеансов за выбранный период
         moneyPerSession:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы на севнс за выбранный период
         moneyPerSession_en:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы на севнс за выбранный период в usd
         moneyPerSession_eu:
           type: string
-          description: Правообладатель (англ)
+          description: Сборы на севнс за выбранный период в euro
         ticketsPerSession:
           type: string
-          description: Правообладатель (англ)
+          description: Зрителей на сеанс
         percentageSalesFK:
           type: string
-          description: Правообладатель (англ)
+          description: процент сборов в поддержанных кинозалах
         percentageTicketsFK:
           type: string
-          description: Правообладатель (англ)
+          description: процент зрителей в поддержанных кинозалах
         percentageSeansesFK:
           type: string
-          description: Правообладатель (англ)
+          description: процент сеансов в поддержанных кинозалах
         posterBig:
           type: string
-          description: Правообладатель (англ)
+          description: Ссылка на большой постер
         posterSmall:
           type: string
-          description: Правообладатель (англ)
+          description: Ссылка на малый постер
         posterBig_en:
           type: string
-          description: Правообладатель (англ)
+          description: Ссылка на большой постер (англ)
         posterSmall_en:
           type: string
-          description: Правообладатель (англ)
+          description: Ссылка на малый постер (англ)
         sumByDateFinish:
           type: string
-          description: Правообладатель (англ)
+          description: Cумма сборов с начала проката по dateFinish
         sumByDateFinish_en:
           type: string
-          description: Правообладатель (англ)
+          description: Cумма сборов с начала проката по dateFinish в usd
         sumByDateFinish_eu:
           type: string
-          description: Правообладатель (англ)
+          description: Cумма сборов с начала проката по dateFinish в euro
         showdays:
           type: string
-          description: Правообладатель (англ)
+          description: кол-во дней в прокате
         previewFrom:
           type: string
-          description: Правообладатель (англ)
+          description: Дата начала предпоказов
         previewTo:
           type: string
-          description: Правообладатель (англ)
+          description: Дата окончания предпоказов
         previewSumm:
           type: string
-          description: Правообладатель (англ)
+          description: Сумма сборов на предпоказах
         previewSumm_en:
           type: string
-          description: Правообладатель (англ)
+          description: Сумма сборов на предпоказах в usd
         previewSumm_eu:
           type: string
-          description: Правообладатель (англ)
+          description: Сумма сборов на предпоказах в euro
         previewTickets:
           type: string
-          description: Правообладатель (англ)
+          description: Кол-во зрителей на предпоказах
         previewSessions:
           type: string
-          description: Правообладатель (англ)
+          description: Кол-во сеансов на предпоказах
 
     CompStatRequest:
       type: object
