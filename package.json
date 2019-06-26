@@ -1,0 +1,26 @@
+[
+  {
+    "genre": "Кинопрограмма",
+    "category": "Кинофильм",
+    "channel": "Культура",
+    "sessionId": 1000,
+    "programmId": 1001,
+    "title": "Агент Мамбо",
+    "startDate": "2019-03-14T00:00:00",
+    "sessStart": "2019-04-14T19:00:00",
+    "sessEnd": "2019-04-14T21:00:00",
+    "audiencePct": 20,
+    "ratingPct": 10,
+    "audienceCnt": 120,
+    "audienceMen": 10,
+    "audienceWomen": 110,
+    "audienceCtg01": 10,
+    "audienceCtg02": 10,
+    "audienceCtg03": 10,
+    "audienceCtg04": 10,
+    "audienceCtg05": 10,
+    "audienceCtg06": 70
+  },
+  .....
+
+]
