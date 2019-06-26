@@ -142,7 +142,7 @@ paths:
       summary: Сохраняет добавленные вручную ПУ для аналогов
       responses:
         '200':
-          description: successful operation
+          description: Если сохранение прошло без ошибок, то возвращается этот объект
           content:
             application/json:
               schema:
@@ -150,7 +150,7 @@ paths:
                 properties:
                   result:
                     type: string
-                    v
+                    default: 'OK'
         '401':
           description: Ошибка аутентификации
           content:
@@ -171,6 +171,43 @@ paths:
         description: Объект запроса
         required: true
 
+  /pub.aspx?method=resetMyFilms:
+    post:
+      summary: Очищает папку добавленных вручную ПУ для аналогов
+      responses:
+        '200':
+          description: Если очистка прошла без ошибок, то возвращается этот объект
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    default: 'OK'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                folder:
+                  type: string
+                  description: Название папки, которую нужно очистить
+        description: Объект запроса
+        required: true
 
 servers:
   - url: 'https://ekinobilet.ru/ekbapi'
