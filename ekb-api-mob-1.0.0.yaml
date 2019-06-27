@@ -9,9 +9,10 @@ info:
 tags:
   - name: eais
     description: ЕАИС
+  #Все методы вызывать так /pub.aspx?auth_token=<auth_token>&method=<имя мнетода>&<параметры>
 paths:
   # *******************************************************************************************************************
-  /pub.aspx?method=auth:
+  /auth:
     post:
       summary: Выполняет процедуру аутентификации и возвращает объект пользователя
       responses:
@@ -41,7 +42,7 @@ paths:
         description: Объект запроса
         required: true
   # *******************************************************************************************************************
-  /pub.aspx?method=authGuest:
+  /authGuest:
     post:
       summary: Выполняет процедуру аутентификации и возвращает объект пользователя для Гостя
       responses:
@@ -71,7 +72,7 @@ paths:
         description: Объект запроса
         required: true
   # *******************************************************************************************************************
-  /pub.aspx?method=getFilmAnalog1:
+  /getFilmAnalog1:
     get:
       summary: Возвращает фильмы-аналоги для заданного фильма в заданном периоде
       parameters:
@@ -109,7 +110,7 @@ paths:
               schema:
                 $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
   # *******************************************************************************************************************
-  /pub.aspx?method=getFilmAnalogInterval:
+  /getFilmAnalogInterval:
     get:
       summary: Возвращает список доступных интервалов для конкретного фильма
       parameters:
@@ -141,7 +142,7 @@ paths:
               schema:
                 $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
   # *******************************************************************************************************************
-  /pub.aspx?method=storeMyFilms:
+  /storeMyFilms:
     post:
       summary: Сохраняет добавленные вручную ПУ для аналогов
       responses:
@@ -175,7 +176,7 @@ paths:
         description: Объект запроса
         required: true
   # *******************************************************************************************************************
-  /pub.aspx?method=resetMyFilms:
+  /resetMyFilms:
     post:
       summary: Очищает папку добавленных вручную ПУ для аналогов
       responses:
@@ -213,7 +214,7 @@ paths:
         description: Объект запроса
         required: true
   # *******************************************************************************************************************
-  /pub.aspx?method=weekends:
+  /weekends:
     get:
       summary: Возвращает список уикендов за выбранный год
       parameters:
@@ -246,7 +247,7 @@ paths:
                 $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
 
   # *******************************************************************************************************************
-  /pub.aspx?method=search:
+  /search:
     get:
       summary: Возвращает список фильмов
       parameters:
@@ -303,6 +304,82 @@ paths:
                 $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
   # *******************************************************************************************************************
   /pub.aspx?method=top:
+    get:
+      summary: Возвращает топ фильмов
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+        - in: path
+          name: region
+          schema:
+            type: string
+          description: Фильтр по коду региона, можно передавать список кодов через зпт
+        - in: path
+          name: sort
+          schema:
+            type: string
+          description: по какому полю сортировать money|tickets|seances. Если не указано и указан query, то сортируется по дате выхода в прокат, если query не указан, то по money
+        - in: path
+          name: qmode
+          schema:
+            type: string
+          description: 1-дополнительно вычисляет поля sumByDateFinish, но похоже это уже  не используется
+        - in: path
+          name: onlyFilmsOlderThenTheNoon
+          schema:
+            type: string
+          description: 1-если фильм вышел в прокат сегодня и еще не настало 12:00, но он не будем возвращаться в результат
+        - in: path
+          name: withMyFilms
+          schema:
+            type: string
+          description: 1-возвращает дополнительно фильмы, которые выбраны вручную пользователем
+        - in: path
+          name: fkonly
+          schema:
+            type: string
+          description: 1-возврвщает данные только по поддержанным кинозалам (доступно только пользователям с грантом 210)
+        - in: path
+          name: periodStart
+          schema:
+            type: string
+          description: Начало периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
+        - in: path
+          name: periodEnd
+          schema:
+            type: string
+          description: Окончание периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Film'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+  # *******************************************************************************************************************
+  /pub.aspx?method=:
     get:
       summary: Возвращает топ фильмов
       parameters:
