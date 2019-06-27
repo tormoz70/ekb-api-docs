@@ -493,3 +493,205 @@ components:
           type: number
           format: money
           description: сборы по фильму за выбранный период
+    GeneralStat:
+      type: object
+      description: Статистика
+      properties:
+        dateStart:
+          type: string
+          description: Начало периода группровки в формате YYYY.MM.DD"T"HH:mm:ss
+        dateFinish:
+          type: string
+          description: Начало периода группровки в формате YYYY.MM.DD"T"HH:mm:ss
+        sum:
+          type: number
+          description: Сумма сборов
+        quantity:
+          type: integer
+          description: Продано билетов
+        sessions:
+          type: integer
+          description: Сеансов
+        rupart:
+          type: number
+          description: Процент российских фильмов
+        moneyPerSession:
+          type: number
+          description: Сборы на сеанс
+        ticketsPerSession:
+          type: number
+          description: Зрителей на сеанс
+        middlePrice:
+          type: number
+          description: Средняя цена билета
+        periodId:
+          type: string
+          description: ID периода
+    RoomStat:
+      type: object
+      description: Статистика
+      properties:
+        id:
+          type: integer
+          description: ID кинозала
+        name:
+          type: string
+          description: Название кинозала
+        dateStart:
+          type: string
+          description: Время начала отрезка продажи в формате YYYY.MM.DD"T"HH:mm:ss (начало периода, данные за который, отображает данный обьект)
+        dateFinish:
+          type: string
+          description: Время окончания отрезка продажи в формате YYYY.MM.DD"T"HH:mm:ss (конец периода, данные за который, отображает данный обьект)
+        sales:
+          type: number
+          description: Сумма сборов за период
+        quantity:
+          type: integer
+          description: Кол-во билетов за период
+        sessions:
+          type: integer
+          description: Кол-во сеансов за период
+        moneyPerSessionw:
+          type: number
+          description: Сборы на сеанс
+        ticketsPerSession:
+          type: integer
+          description: Билетов на сеанс
+    CinemaStat:
+      type: object
+      description: Статистика
+      properties:
+        id:
+          type: integer
+          description: Идентификатор кинотеатра
+        name:
+          type: string
+          description: Название кинотеатра
+        region:
+          type: string
+          description: Регион
+        city:
+          type: string
+          description: Город
+        network:
+          type: string
+          description: Наименование сети кинотеатров (необязат)
+        money:
+          type: number
+          description: Сумма сборов за все время в кинотеатре
+        tickets:
+          type: integer
+          description: Сумма проданных билетов за все время в кинотеатре
+        seances:
+          type: integer
+          description: Количество сеансов за все время в кинотеатре
+        dateStart:
+          type: string
+          description: Время начала отрезка продажи в формате YYYY.MM.DD"T"HH:mm:ss (начало периода, данные за который, отображает данный обьект)
+        dateFinish:
+          type: string
+          description: Время окончания отрезка продажи в формате YYYY.MM.DD"T"HH:mm:ss (конец периода, данные за который, отображает данный обьект)
+        sum:
+          type: number
+          description: Количество сборов в кинотеатре (за указанный  участок времени)
+        quantity:
+          type: integer
+          description: Количество проданных билетов в кинотеатре (за указанный  участок времени)
+        sessions:
+          type: integer
+          description: Количество сеансов в кинотеатре (за указанный  участок времени)
+        halls:
+          type: integer
+          description: Количество залов в кинотеатре
+        moneyPerSessionw:
+          type: number
+          description: Наработка в сборах на сеанс в кинотеатре (за указанный  участок времени)
+        ticketsPerSession:
+          type: integer
+          description: Наработка в зрителях на сеанс в кинотеатре
+        moneyPerHall:
+          type: number
+          description: Наработка в сборах на зал в кинотеатре (за указанный  участок времени)
+        srooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomStat'
+
+    FilmWithRegionStat:
+      type: object
+      description: Статистика по фильму с разбивкой по регионам
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        year:
+          type: string
+        country:
+          type: string
+        owner:
+          type: string
+        description:
+          type: string
+        launch_date:
+          type: string
+        money:
+          type: number
+        tickets:
+          type: integer
+        seances:
+          type: integer
+        presales:
+          type: number
+        presalesStart:
+          type: string
+        presalesEnd:
+          type: string
+        firstWeekendSales:
+          type: number
+        image_large:
+          type: string
+        image:
+          type: string
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegionStat'
+
+
+    RegionStat:
+      type: object
+      description: Статистика по региону
+      properties:
+        regionCode:
+          type: string
+        regionName:
+          type: string
+        regionType:
+          type: string
+        sum:
+          type: number
+        quantity:
+          type: integer
+        sessions:
+          type: integer
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayStat'
+
+
+    DayStat:
+      type: object
+      description: Сатистика за день
+      properties:
+        day:
+          type: string
+        sum:
+          type: number
+        quantity:
+          type: integer
+        sessions:
+          type: integer
+    }
