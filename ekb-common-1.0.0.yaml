@@ -493,7 +493,7 @@ components:
           type: number
           format: money
           description: сборы по фильму за выбранный период
-    GeneralStat:
+    Sales:
       type: object
       description: Статистика
       properties:
@@ -666,18 +666,25 @@ components:
       properties:
         regionCode:
           type: string
+          description: ID региона
         regionName:
           type: string
+          description: Название региона
         regionType:
           type: string
+          description: Тип "region"-регион, "city"-город миллионник
         sum:
           type: number
+          description: Сумма сборов
         quantity:
           type: integer
+          description: Кол-во зрителей
         sessions:
           type: integer
+          description: Кол-во сеансов
         days:
           type: array
+          description: Статистика по дням
           items:
             $ref: '#/components/schemas/DayStat'
 
@@ -688,10 +695,114 @@ components:
       properties:
         day:
           type: string
+          description: Дата
         sum:
           type: number
+          description: Сумма сборов
         quantity:
           type: integer
+          description: Кол-во зрителей
         sessions:
           type: integer
+          description: Кол-во сеансов
     }
+
+    Region:
+      type: object
+      description: Регион
+      properties:
+        id:
+          type: string
+          description: ID региона
+        title:
+          type: string
+          description: Название региона
+        regionType:
+          type: string
+          description: Тип "region"-регион, "city"-город миллионник
+
+
+    Owntype:
+      type: object
+      description: Вид собственности
+      properties:
+        id:
+          type: integer
+          description: ID
+        title:
+          type: string
+          description: Название
+
+    Distributor:
+      type: object
+      description: Дистрибьютор
+      properties:
+        id:
+          type: integer
+          description: ID
+        title:
+          type: string
+          description: Название
+        title_en:
+          type: string
+          description: Название англ
+        money:
+          type: number
+          description: Общие сборы по фильмам дистрибьютора
+
+    Dynamic:
+      type: object
+      description: Динамика
+      properties:
+        showDate:
+          type: string
+        orGrow:
+          type: number
+          description: %-прирост по кинотеатру
+        npGrow:
+          type: number
+          description: %-прирост по городу
+        rcGrow:
+          type: number
+          description: %-прирост по региональному центру
+        rrGrow:
+          type: number
+          description: %-прирост по региону
+
+    Weekend:
+      type: object
+      description: Уикенд
+      properties:
+        id:
+          type: integer
+          description: ID уикенда в формате YYYYNN, где YYYY-год, NN-номер уикенда в году
+        dateStart:
+          type: string
+          description: Начало уикенда в формате YYYY-MM-DD"T"HH:mm:ss
+        dateEnd:
+          type: string
+          description: Окончание уикенда в формате YYYY-MM-DD"T"HH:mm:ss
+
+    AnalogInterval:
+      type: object
+      description: Интервал для построения массива фильмов-аналогов
+      properties:
+        id:
+          type: string
+          description: ID интервала
+        desc:
+          type: string
+          description: Название интервала
+
+    AnalogManualFolder:
+      type: object
+      description: Папка для сохранения выбранных ПУ для аналогов
+      properties:
+        folder:
+          type: string
+          description: ID папки
+        pus:
+          description: Список ПУ
+          type: array
+          items:
+            type: string

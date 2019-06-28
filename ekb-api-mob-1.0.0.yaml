@@ -128,7 +128,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AnalogInterval'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/AnalogInterval'
         '401':
           description: Ошибка аутентификации
           content:
@@ -172,7 +172,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AnalogManualFolder'
+              $ref: 'ekb-common-1.0.0.yaml#/components/schemas/AnalogManualFolder'
         description: Объект запроса
         required: true
   # *******************************************************************************************************************
@@ -232,7 +232,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Weekend'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Weekend'
         '401':
           description: Ошибка аутентификации
           content:
@@ -436,7 +436,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/GeneralStat'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Sales'
         '401':
           description: Ошибка аутентификации
           content:
@@ -507,7 +507,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/GeneralStat'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Sales'
         '401':
           description: Ошибка аутентификации
           content:
@@ -834,7 +834,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/GeneralStat'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Sales'
         '401':
           description: Ошибка аутентификации
           content:
@@ -883,7 +883,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/GeneralStat'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Sales'
         '401':
           description: Ошибка аутентификации
           content:
@@ -997,7 +997,518 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/GeneralStat'
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Sales'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+
+  # *******************************************************************************************************************
+  /getRegions:
+    get:
+      summary: Возвращает справочник регионов
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Region'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+  # *******************************************************************************************************************
+  /getCinemas:
+    get:
+      summary: Возвращает справочник кинотеатров, результат фильтруется в зависимости от ролей пользователя
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+        - in: path
+          name: periodStart
+          schema:
+            type: string
+          description: Начало периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
+        - in: path
+          name: periodEnd
+          schema:
+            type: string
+          description: Окончание периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: ID кинотеатра
+        - in: path
+          name: query
+          schema:
+            type: string
+          description: Строка поиска по названию или по ID кинотеатра
+        - in: path
+          name: owntype
+          schema:
+            type: string
+          description: Фильтр по форме собственности
+        - in: path
+          name: fksupported
+          schema:
+            type: string
+          description: 1-отдавать данные только по поддержанным кинотеатрам
+        - in: path
+          name: mintps
+          schema:
+            type: number
+          description: Фильтр по TicketsPerSession минимальное значение
+        - in: path
+          name: maxtps
+          schema:
+            type: number
+          description: Фильтр по TicketsPerSession максимальное значение
+        - in: path
+          name: minmps
+          schema:
+            type: number
+          description: Фильтр по MoneyPerSession  минимальное значение
+        - in: path
+          name: maxmps
+          schema:
+            type: number
+          description: Фильтр по MoneyPerSession максимальное значение
+        - in: path
+          name: minmph
+          schema:
+            type: number
+          description: Фильтр по MoneyPerHall  минимальное значение
+        - in: path
+          name: maxmph
+          schema:
+            type: number
+          description: Фильтр по MoneyPerHall максимальное значение
+        - in: path
+          name: mintpc
+          schema:
+            type: number
+          description: Фильтр по TicketsPerCinema  минимальное значение
+        - in: path
+          name: maxtpc
+          schema:
+            type: number
+          description: Фильтр по TicketsPerCinema максимальное значение
+        - in: path
+          name: minmpc
+          schema:
+            type: number
+          description: Фильтр по MoneyPerCinema  минимальное значение
+        - in: path
+          name: maxmpc
+          schema:
+            type: number
+          description: Фильтр по MoneyPerCinema максимальное значение
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/CinemaStat'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+
+  # *******************************************************************************************************************
+  /getDemonstrators:
+    get:
+      summary: Возвращает справочник кинотеатров, результат фильтруется в зависимости от ролей пользователя
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+        - in: path
+          name: region
+          schema:
+            type: string
+          description: ID региона
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/CinemaStat'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+  /getFilmsForCinema:
+    summary: Возвращает справочник кинотеатров, результат фильтруется в зависимости от ролей пользователя
+    parameters:
+      - in: path
+        name: periodStart
+        schema:
+          type: string
+        description: Начало периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
+      - in: path
+        name: periodEnd
+        schema:
+          type: string
+        description: Окончание периода за который собранны данные в полях sum, quantity, sessions, moneyPerSession, ticketsPerSession
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID кинотеатра
+      - in: path
+        name: idSroom
+        schema:
+          type: integer
+        description: ID кинозала
+      - in: path
+        name: onlyFilmsOlderThenTheNoon
+        schema:
+          type: string
+        description: 1-если фильм вышел в прокат сегодня и еще не настало 12:00, но он не будем возвращаться в результат
+      - in: path
+        name: moviesOnly
+        schema:
+          type: string
+        description: 1-возвращать только фильмы которые в прокате, если последний сеанс фильма был более 1 суток назад, то фильм не будем возвращаться в результат
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Film'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+  # *******************************************************************************************************************
+  /getFilmForCinemaStats:
+    get:
+      summary: Возвращает основную статистику по фильму, по кинотеатру с детализацией до 1 часа
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+        - in: path
+          name: idFilm
+          schema:
+            type: string
+          description: ПУ филма
+        - in: path
+          name: idCinema
+          schema:
+            type: integer
+          description: ID кинотеатра
+        - in: path
+          name: year
+          schema:
+            type: string
+          description: Год в формате YYYY, если нужно получить статистику за год с группировкой по месяцам
+        - in: path
+          name: groupByWeekend
+          schema:
+            type: string
+          description: true-тогда данные будут сгруппированы по уикендам и необходимо передать параметры periodStart, periodEnd
+        - in: path
+          name: groupBy
+          schema:
+            type: integer
+          description: Кол-во дней по которым нужно сгруппирповать статистику на выходе
+        - in: path
+          name: periodStart
+          schema:
+            type: string
+          description: Начало периода, за который запрашивается статистика
+        - in: path
+          name: periodEnd
+          schema:
+            type: string
+          description: Окончание периода, за который запрашивается статистика
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Sales'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+
+  # *******************************************************************************************************************
+  /searchCinemas:
+    get:
+      summary: Возвращает список кинотеатров
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+        - in: path
+          name: query
+          schema:
+            type: string
+          description: Строка поиска по названию и по ID
+        - in: path
+          name: owntype
+          schema:
+            type: string
+          description: Строка поиска по виду собственности
+        - in: path
+          name: fksupported
+          schema:
+            type: string
+          description: 1-только по поддержанным ФК
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/CinemaStat'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+
+  # *******************************************************************************************************************
+  /getOwntypes:
+    get:
+      summary: Возвращает справочник видов собственности
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Owntype'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+
+  # *******************************************************************************************************************
+  /getDistributors:
+    get:
+      summary: Возвращает справочник видов собственности
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Distributor'
+        '401':
+          description: Ошибка аутентификации
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Error'
+
+  # *******************************************************************************************************************
+  /getDynamic:
+    get:
+      summary: Динамика
+      parameters:
+        - in: path
+          name: currId
+          schema:
+            type: integer
+          description: Код валюты в которой будут возвращаться все суммы, 0-руб, 1-доллар США, 2-евро, по умолчанию 0.
+        - in: path
+          name: rlocale
+          schema:
+            type: string
+          description: В какой локали возвращать данные, 'ru'-русский, 'en'-английский, по умолчанию 'ru'
+        - in: path
+          name: periodStart
+          schema:
+            type: string
+          description: Начало периода, за который запрашивается статистика
+        - in: path
+          name: periodEnd
+          schema:
+            type: string
+          description: Окончание периода, за который запрашивается статистика
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: ID кинотеатра
+        - in: path
+          name: topmode
+          schema:
+            type: string
+          description: Сортировать 0-по orGrow, 1-по npGrow, 2-по rcGrow, 3-по rrGrow
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'ekb-common-1.0.0.yaml#/components/schemas/Dynamic'
         '401':
           description: Ошибка аутентификации
           content:
@@ -1017,43 +1528,4 @@ servers:
     description: боевой сервер
   - url: 'https://ekinobilet.ru/ekbapi2'
     description: тестовый сервер
-components:
-  schemas:
 
-    Weekend:
-      type: object
-      description: Уикенд
-      properties:
-        id:
-          type: integer
-          description: ID уикенда в формате YYYYNN, где YYYY-год, NN-номер уикенда в году
-        dateStart:
-          type: string
-          description: Начало уикенда в формате YYYY-MM-DD"T"HH:mm:ss
-        dateEnd:
-          type: string
-          description: Окончание уикенда в формате YYYY-MM-DD"T"HH:mm:ss
-
-    AnalogInterval:
-      type: object
-      description: Интервал для построения массива фильмов-аналогов
-      properties:
-        id:
-          type: string
-          description: ID интервала
-        desc:
-          type: string
-          description: Название интервала
-
-    AnalogManualFolder:
-      type: object
-      description: Папка для сохранения выбранных ПУ для аналогов
-      properties:
-        folder:
-          type: string
-          description: ID папки
-        pus:
-          description: Список ПУ
-          type: array
-          items:
-            type: string
