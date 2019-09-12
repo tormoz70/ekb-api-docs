@@ -1,0 +1,184 @@
+openapi: 3.0.0
+info:
+  description: |
+    API для кабинета КБ https://ekinobilet.ru/bio4j/rapi
+  version: "1.0.0-oas3"
+  title: API для кабинета КБ
+  contact:
+    email: ah@fond-kino.ru
+tags:
+  - name: eais
+    description: |
+  #Все методы вызывать так https://ekinobilet.ru/bio4j/rapi
+  # Все запросы имеют по умолчанию эти атрибуты
+  # rqt=crud.ds.get - возвращает набор данных
+  # bm=ekbp2 - всегда такой (других модулей нет)
+  # biocd=<путь к набору данныхв формате token.token.token...> - определяе набор данных
+  # stoken={{stoken}} это как везде токен аутентификации
+paths:
+  # далее пути - это значение парамера biocd
+  # *******************************************************************************************************************
+  /cabinet.distr.film-search:
+    get:
+      summary: Возвращает фильмы-правообладателя и только фильмы правообладателя. Текущий пользователь должен быть правообладателем (роль 7,8)
+      parameters:
+        - in: path
+          name: query
+          schema:
+            type: string
+          required: true
+          description: <строка поиска> для разных наборов данных работает по разному, но в основном ищет вхождение по строковым полям без учета регистра
+        - in: path
+          name: sortord
+          schema:
+            type: string
+          required: true
+          description: <по какому атрибуту сортировать> для разных наборов данных работает по разному
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
+#        '401':
+#          description: Ошибка аутентификации
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#        '500':
+#          description: Ошибка сервера
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+
+# *****************************************************************************************************************************
+servers:
+  - url: 'http://mkesb.sapi.fond-kino.ru:8083/sapi/rest'
+components:
+  schemas:
+    Film:
+      type: object
+      description: Фильм
+      properties:
+        total_companies:
+          type: number
+          description: всего компаний, которые учавствовали в производстве проекта
+        id:
+          type: string
+          description: Идентификатор проэкта
+        pu_num:
+          type: string
+          description: Номер ПУ
+        title:
+          type: string
+          description: Название фильма
+        prod_year:
+          type: string
+          description: Год производства
+        madein:
+          type: string
+          description: Страна производитель
+        studia:
+          type: string
+          description: Студия
+        annotxt:
+          type: string
+          description: Анотация
+        launch_date:
+          type: string
+          description: Дата начала проката
+        genre:
+          type: string
+          description: Жанр
+        genreids:
+          type: string
+          description: ID жанров
+        view_restr:
+          type: string
+          description: Ограничения на просмотр
+        age_restr:
+          type: string
+          description: Ограничение по возрасту
+        mdirector:
+          type: string
+          description: Режисер
+        mscreenwriter:
+          type: string
+          description: Сценарист
+        mproducer:
+          type: string
+          description: Продюссер
+        mdistributor:
+          type: string
+          description: Прокатчик
+        mstarring:
+          type: string
+          description: В ролях
+        mrating:
+          type: string
+          description: Рэйтинг
+        money:
+          type: decimal
+          description: Сборы
+        tickets:
+          type: integer
+          description: Зрителей
+        seances:
+          type: integer
+          description: Сеансов
+        presales:
+          type: decimal
+          description: Предпродажи
+        presalesstart:
+          type: string
+          description: Начало предпродаж
+        presalesend:
+          type: string
+          description: Окончание предпродаж
+        launchdatesales:
+          type: decimal
+          description: Сборы в первый день
+        first_weed_start:
+          type: string
+          description: Начало первого уикенда
+        first_weed_end:
+          type: string
+          description: Окончание первого уикенда
+        first_weed_summ:
+          type: decimal
+          description: Сборы первого уикенда
+        second_weed_start:
+          type: string
+          description: Начало второго уикенда
+        second_weed_end:
+          type: string
+          description: Окончание второго уикенда
+        second_weed_summ:
+          type: decimal
+          description: Сборы второго уикенда
+        sale_end:
+          type: string
+          description: Окончание продаж
+        poster_url_big:
+          type: string
+          description: URL на постер (большой)
+        poster_url_small:
+          type: string
+          description: URL на постер (малый)
+        distribs:
+          type: string
+          description: Прокатчики
+        distribids:
+          type: string
+          description: ID прокатчиков
+        orgs:
+          type: decimal
+          description: Кол-во кинотеатров
+        srooms:
+          type: decimal
+          description: Кол-во кинозалов
